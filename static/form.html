@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <title>Url Shortner</title>
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      h1 {
+        font-size: 45px;
+        color: #060b29;
+        font-weight: normal;
+      }
+
+      h2 {
+        color: hwb(0 3% 9%);
+        background-color: #cecece;
+        font-size: 14px;
+        font-weight: normal;
+        width: fit-content;
+        padding: 4px 7px;
+        border-radius: 10px;
+      }
+
+      p {
+        color: #5a5a5c;
+      }
+      .container {
+        background-image: linear-gradient(to top, #c9e3fc 0%, #9bb9ff 100%);
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 100px;
+      }
+
+      .form-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+        background: #e6f4ff;
+        padding: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 20px;
+      }
+
+      .formDiv {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+      }
+      form {
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        background-color: #e6f4ff;
+        border: 1px solid #b3b3b4;
+        border-radius: 30px;
+      }
+
+      input {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        width: 100%;
+      }
+
+      input:focus {
+        border: none;
+        outline: none;
+      }
+
+      button {
+        border: none;
+        font-size: 14px;
+        color: #e6f4ff;
+        background-color: #2a58c5;
+        padding: 10px 15px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: 0.3s ease-in-out;
+      }
+
+      button:hover {
+        opacity: 0.8;
+        background-image: linear-gradient(to top, #060b29 0%, #0035af 100%);
+      }
+
+      .shortUrlDiv {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      #snackbar {
+        visibility: hidden;
+        min-width: 250px; /* Set a default minimum width */
+        margin-left: -125px; /* Divide value of min-width by 2 */
+        background-color: #2a58c5; /* Black background color */
+        color: #fff; /* White text color */
+        text-align: center; /* Centered text */
+        border-radius: 2px; /* Rounded borders */
+        padding: 16px; /* Padding */
+        position: fixed; /* Sit on top of the screen */
+        z-index: 1; /* Add a z-index if needed */
+        left: 50%; /* Center the snackbar */
+        bottom: 30px; /* 30px from the bottom */
+      }
+
+      /* Show the snackbar when clicking on a button (class added with JavaScript) */
+      #snackbar.show {
+        visibility: visible; /* Show the snackbar */
+        /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+        -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        animation: fadein 0.5s, fadeout 0.5s 2.5s;
+      }
+
+      /* Animations to fade the snackbar in and out */
+      @-webkit-keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadein {
+        from {
+          bottom: 0;
+          opacity: 0;
+        }
+        to {
+          bottom: 30px;
+          opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeout {
+        from {
+          bottom: 30px;
+          opacity: 1;
+        }
+        to {
+          bottom: 0;
+          opacity: 0;
+        }
+      }
+
+      @media screen and (max-width: 640px) {
+        .container {
+          flex-direction: column;
+          padding: 20px;
+        }
+
+        img {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-container">
+        <h2>simple and fast</h2>
+        <h1>URL Shortener</h1>
+        <p>Transform long URLs into concise links instantly.</p>
+        <div id="formDiv" class="formDiv">
+          <form id="urlForm">
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12.7917 15.7991L14.2223 14.3676C16.5926 11.9959 16.5926 8.15054 14.2223 5.7788C11.8521 3.40707 8.0091 3.40707 5.63885 5.7788L2.77769 8.64174C0.407436 11.0135 0.407436 14.8588 2.77769 17.2306C3.87688 18.3304 5.29279 18.9202 6.73165 19"
+                stroke="#1C274C"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <path
+                d="M21.2223 15.3583C23.5926 12.9865 23.5926 9.14118 21.2223 6.76945C20.1231 5.66957 18.7072 5.07976 17.2683 5M18.3612 18.2212C15.9909 20.5929 12.1479 20.5929 9.77769 18.2212C7.40744 15.8495 7.40744 12.0041 9.77769 9.63239L11.2083 8.20092"
+                stroke="#1C274C"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <input
+              type="url"
+              name="url"
+              placeholder="www.example.com"
+              required
+            />
+            <button type="submit">Submit</button>
+          </form>
+        </div>
+        <div id="shortUrlDiv" class="shortUrlDiv" style="display: none">
+          <input type="text" id="copyurl" readonly style="text-align: center" />
+          <button onclick="copyToClipboard()">Copy to Clipboard</button>
+        </div>
+      </div>
+
+      <div id="snackbar">url copied!</div>
+    </div>
+
+    <script>
+      const formDiv = document.getElementById("formDiv");
+      const shortUrlDiv = document.getElementById("shortUrlDiv");
+      const copyUrlInput = document.getElementById("copyurl");
+
+      document
+        .getElementById("urlForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault(); // Prevent default form submission
+
+          const formData = new FormData(event.target);
+          const url = formData.get("url");
+
+          try {
+            const response = await fetch("/submit", {
+              method: "POST",
+              body: new URLSearchParams({ url: url }),
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+              copyUrlInput.value = data.shortUrl; // Set the returned short URL in the input field
+              formDiv.style.display = "none"; // Hide the form div
+              shortUrlDiv.style.display = "flex"; // Show the short URL div
+            } else {
+              alert(data.message || "An error occurred.");
+            }
+          } catch (error) {
+            console.error("Error submitting form:", error);
+          }
+        });
+
+      function copyToClipboard() {
+        copyUrlInput.select();
+        copyUrlInput.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyUrlInput.value);
+        showSnackbar()
+      }
+
+      function showSnackbar() {
+        const x = document.getElementById("snackbar");
+
+        x.className = "show";
+
+        setTimeout(function () {
+          x.className = x.className.replace("show", "");
+        }, 3000);
+      }
+    </script>
+  </body>
+</html>
