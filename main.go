@@ -53,6 +53,7 @@ func main()  {
 
 
    // load static files
+   r.StaticFile("/favicon.ico", "./static/favicon.ico")
    r.LoadHTMLFiles("static/form.html")
 
    r.GET("/", func(c *gin.Context) {
