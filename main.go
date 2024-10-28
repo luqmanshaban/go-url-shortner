@@ -117,7 +117,7 @@ func getUrl(c *gin.Context) {
 }
 
 func generateRandomString(n int) string {
-	char := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZZ")
+	char := []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 	b := make([]rune, n)
 	for i := range b{
 		b[i] = char[rand.Intn(len(char))]
