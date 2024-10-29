@@ -3,11 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="favicon.ico" style="border-radius: 50%;">
+    <link
+      rel="icon"
+      type="image/png"
+      href="favicon.ico"
+      style="border-radius: 50%"
+    />
 
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <title>Fast & Simple URL Shortener</title>
-    <meta name="description" content="YourLink is a quick and easy URL shortener that helps you create short links and track clicks. Perfect for social media, emails, and analytics.">
+    <meta
+      name="description"
+      content="YourLink is a quick and easy URL shortener that helps you create short links and track clicks. Perfect for social media, emails, and analytics."
+    />
 
     <style>
       * {
@@ -249,6 +257,12 @@
 
           const formData = new FormData(event.target);
           const url = formData.get("url");
+          const urlPattern = /^(https?:\/\/[^\s/$.?#].[^\s]*)$/i;
+
+          if (!urlPattern.test(url)) {
+            alert("Please enter a valid HTTP or HTTPS URL.");
+            return; // Stop form submission if the URL is invalid
+          }
 
           try {
             const response = await fetch("/submit", {
